@@ -9,19 +9,35 @@ class Account
 private:
 	double amount;
 
-	static double getValidAmount(std::istream& in)  {
+	bool checkValidBalance() {
+		if (this->amount < 0)
+			return false;
+		return true;
+	}
+
+	double getValidAmount(std::istream& in)  {
 		double bufer;
 		std::cout << "Enter a amount: " << std::endl;
 		if (in >> bufer)
+		{
+			while (bufer < 0) {
+				std::cerr << "Amount can't be smaller than 0!" << std::endl;
+				in.clear();
+				in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				std::cout << "Enter a number greater or equal to zero" << std::endl;
+				in >> bufer;
+			}
 			return bufer;
-		else
+		}
+		else {
 			in.clear();
 			in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			std::cerr << "Invalid input. Please enter a number!" << std::endl;
 			return getValidAmount(in);
+		}
 	}
 public:
-	Account(double amount) : amount(amount) {
+	Account(double amount) : amount(checkValidBalance() ? amount : 0) {
 		std::cout << "You have successfully created a new Account." << std::endl;
 	}
 
@@ -50,24 +66,26 @@ public:
 };
 
 void Account::deposit(std::istream& in) {
-	double newAmount;
-	try
-	{
-		if(in >> newAmount)
-			amount += newAmount;
-		else {
-			throw std::invalid_argument("You must enter a number!");
-			deposit(in);
-		}
+	std::cout << "Your are depositing!" << std::endl;
+	double newAmount = getValidAmount(in);
+	while (!newAmount) {
+		in.clear();
+		in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		in >> newAmount;
 	}
-	catch (const std::invalid_argument& e) {
-		std::cerr << "Error: " << e.what() << std::endl;
-	}
+	this->amount += newAmount;
 	std::cout << "You have deposited : " << newAmount << std::endl;
 }
 
 void Account::withdraw(std::istream& in) {
+	std::cout << "You are withdrawing!" << std::endl;
 	double withdrawed = getValidAmount(in);
+	while (this->amount - withdrawed < 0)
+	{
+		std::cout << "You don't have enought money!" << std::endl;
+		withdrawed = getValidAmount(in);
+	}
+	
 	this->amount -= withdrawed;
 	std::cout << "Your withdrawed: "
 		<< withdrawed << std::endl;
