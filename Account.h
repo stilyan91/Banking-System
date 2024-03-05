@@ -2,7 +2,7 @@
 #define ACOUNT_H
 
 #include <iostream>
-#include <execution>
+#include <sstream>
 
 class Account
 {
@@ -37,6 +37,7 @@ private:
 		}
 	}
 public:
+	Account ():amount(0) {}
 	Account(double amount) : amount(checkValidBalance() ? amount : 0) {
 		std::cout << "You have successfully created a new Account." << std::endl;
 	}
@@ -52,9 +53,9 @@ public:
 
 	void deposit(std::istream& in);
 
-	double getBalance() const { 
+	void getBalance() const { 
 		std::cout << "Your current balance is: " << amount << std::endl;
-			return amount; }
+	 }
 
 	void withdraw(double amount) { this->amount -= amount;
 		std::cout << "Your withdrawed: " 
@@ -90,4 +91,6 @@ void Account::withdraw(std::istream& in) {
 	std::cout << "Your withdrawed: "
 		<< withdrawed << std::endl;
 }
+
+
 #endif // !ACCOUNT_H

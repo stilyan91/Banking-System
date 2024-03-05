@@ -1,14 +1,13 @@
 #include <iostream>
-#include "Account.h"
+#include "BankingSystem.h"
 
 
 int main() {
-	Account acc(std::cin);
-	acc.getBalance();
-	acc.deposit(std::cin);
-	acc.getBalance();
-	acc.withdraw(std::cin);
-	acc.getBalance();
+    BankingSystem bank;
+    bank.run();
+
+
+    return 0;
 }
 
 // Main Functionality Class
@@ -26,20 +25,5 @@ private:
     // Add necessary data members and helper functions
 };
 
-// Account Class
-class Account {
-public:
-    void deposit(double amount);
-    void withdraw(double amount);
-    double getBalance() const;
-private:
-    // Add necessary data members
-};
 
-// Main Function
-int main() {
-    BankingSystem bankingSystem;
-    bankingSystem.run();
-    return 0;
-}
 */
